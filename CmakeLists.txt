@@ -1,0 +1,39 @@
+cmake_minimum_required(VERSION 3.22)
+project(hw4)
+
+set(CMAKE_CXX_STANDARD 11)
+
+add_executable(hw4 main.cpp
+        utilities.h
+        utilities.cpp
+        Exception.h
+        Cards/Card.h
+        Cards/Card.cpp
+        Cards/Battle.h
+        Cards/Battle.cpp
+        Cards/Barfight.h
+        Cards/Barfight.cpp
+        Cards/Dragon.h
+        Cards/Dragon.cpp
+        Cards/Fairy.h
+        Cards/Fairy.cpp
+        Cards/Goblin.h
+        Cards/Goblin.cpp
+        Cards/Merchant.h
+        Cards/Merchant.cpp
+        Cards/Pitfall.h
+        Cards/Pitfall.cpp
+        Cards/Treasure.h
+        Cards/Treasure.cpp
+        Cards/Vampire.h
+        Cards/Vampire.cpp
+        Players/Player.h
+        Players/Player.cpp
+        Players/Fighter.h
+        Players/Fighter.cpp
+        Players/Rogue.h
+        Players/Rogue.cpp
+        Players/Wizard.h
+        Players/Wizard.cpp
+        Mtmchkin.h
+        Mtmchkin.cpp)
