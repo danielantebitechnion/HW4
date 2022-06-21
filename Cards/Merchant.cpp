@@ -3,6 +3,7 @@
 using std::string;
 using std::cin;
 using std::cout;
+using std::getline;
 
 Merchant::Merchant ()
 :
@@ -21,7 +22,7 @@ void Merchant::applyEncounter (Player& player) const
         printMerchantInsufficientCoins(cout);
     }
     else{
-        cin >> str;
+        getline(cin,str);
         while(!choseAction){
             if(str.length() == 1 && isdigit(str[0]) &&  stoi(str)>= LEAVE && stoi(str) <= FORCE_BOOST){
                 input = stoi(str);

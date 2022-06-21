@@ -76,15 +76,13 @@ public:
     int getNumberOfRounds() const;
 
     private:
-        
-        std::vector<bool> m_isInGame; // true if player is still playing
-        static int m_numberOfRounds; // count the number of rounds in game
-        static int m_numberOfPlayers; // number of active players
-        static int m_amountOfWinners;
-        static int m_amountOfLosers;
-        std::vector<int> m_playersRank ;
+        int m_numberOfRounds; // count the number of rounds in game
+        int m_numberOfPlayers; // number of active players
         std::deque<std::unique_ptr<Card>> m_cardsDeque;
         std::vector<std::unique_ptr<Player>> m_playersInGame;
+        std::vector<std::unique_ptr<Player>> m_winners;
+        std::vector<std::unique_ptr<Player>> m_losers;
+        int m_numberOfWinners,m_numberOfLosers;
 
         int initializeTeamSize() const;
         void createCard(const std::string cardString, int row);
