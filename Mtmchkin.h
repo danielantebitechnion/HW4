@@ -27,6 +27,7 @@ const int MINIMUM_AMOUNT_OF_CARDS = 5;
 const int MINIMUM_AMOUNT_OF_PLAYERS = 2;
 const int MAXIMUM_AMOUNT_OF_PLAYERS = 6;
 const char SPACE_CHAR = ' ';
+const int MAXIMUM_NUMBER_OF_ROUNDS = 100;
 
 class Mtmchkin{
 
@@ -81,9 +82,9 @@ public:
         static int m_numberOfPlayers; // number of active players
         static int m_amountOfWinners;
         static int m_amountOfLosers;
-        int m_playersRank[MAXIMUM_AMOUNT_OF_PLAYERS];
-        std::deque<Card*> m_cardsDeque;
-        std::vector<Player*> m_playersInGame;
+        std::vector<int> m_playersRank ;
+        std::deque<std::unique_ptr<Card>> m_cardsDeque;
+        std::vector<std::unique_ptr<Player>> m_playersInGame;
 
         int initializeTeamSize() const;
         void createCard(const std::string cardString, int row);
@@ -97,8 +98,7 @@ public:
             T c(a);
             a=b;
             b=c;
-        }
-        
+        }      
 };
 
 

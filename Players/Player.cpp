@@ -183,6 +183,5 @@ std::ostream& operator<<(std::ostream& os,const Player& player)
     printPlayerDetails (os, player.m_name.c_str(),
     player.getJob().c_str(), player.m_level, player.m_force, player.m_HP,
     player.m_coins);
-    os << endl;
     return os;
 }

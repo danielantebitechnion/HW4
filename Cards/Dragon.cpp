@@ -12,8 +12,7 @@ Dragon::Dragon ()
 void Dragon::printInfo (std::ostream& os) const
 {
     printCardDetails(os, this->m_cardName);
-    printMonsterDetails(os, this->m_force, 0,
-    this->m_coins, true);
+    printMonsterDetails(os, this->m_force, 0,this->m_coins, true);
     printEndOfCardDetails(os);
 }
 

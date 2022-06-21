@@ -5,17 +5,20 @@ using std::ifstream;
 using std::string;
 using std::cin;
 using std::cout;
-using std::getline;
 using std::unique_ptr;
 using std::stoi;
+using std::getline;
+using std::move;
 
 
-int Mtmchkin::m_numberOfRounds = 0;
+
+int Mtmchkin::m_numberOfRounds = 1;
 int Mtmchkin::m_amountOfLosers = 0;
 int Mtmchkin::m_amountOfWinners = 0;
 int Mtmchkin::m_numberOfPlayers = 0;
 
 Mtmchkin::Mtmchkin(const string fileName){
+    printStartGameMessage();
     checkFile(fileName);
     m_numberOfPlayers = initializeTeamSize();
     insertPlayers(m_numberOfPlayers);
@@ -23,7 +26,7 @@ Mtmchkin::Mtmchkin(const string fileName){
         m_playersRank[i] = i;
         m_isInGame.push_back(true);
     }
-};
+}
 
 void Mtmchkin::checkFile(const string fileName){
     int amountOfCards =0;
@@ -38,17 +41,14 @@ void Mtmchkin::checkFile(const string fileName){
             ++amountOfCards;
         }
     }catch(const DeckFileFormatError& e){
-        //m_cardsDeque.release();
         throw DeckFileFormatError(amountOfCards+1);
     }
-    if(amountOfCards <= MINIMUM_AMOUNT_OF_CARDS){
-        //m_cardsDeque.release();
+    if(amountOfCards < MINIMUM_AMOUNT_OF_CARDS){
         throw DeckFileInvalidSize();
     }
 }
 
 int Mtmchkin::initializeTeamSize() const{
-    printStartGameMessage();
     string teamSize;
     while (true)
     {
@@ -67,14 +67,13 @@ int Mtmchkin::initializeTeamSize() const{
 }
 
 void Mtmchkin::insertPlayers(int teamSize){
-    int players = 0;
+    int addedPlayers = 0;
     string str;
     string playerName;
     string playerClass;
-    while(players < teamSize){
+    while(addedPlayers < teamSize){
         printInsertPlayerMessage();
-        fflush(stdin);
-        getline(cin , str);
+        getline(cin,str);
         if(str.find(SPACE_CHAR) == str.npos){//no space char
             playerName = str;
         }
@@ -84,7 +83,7 @@ void Mtmchkin::insertPlayers(int teamSize){
         }
         if(checkName(playerName)){
             if(createPlayer(playerName,playerClass)){
-                ++players;
+                ++addedPlayers;
             }
             else{
                 printInvalidClass();
@@ -96,16 +95,20 @@ void Mtmchkin::insertPlayers(int teamSize){
     }
 }
 
+
 bool Mtmchkin::createPlayer(const std::string playerName, const std::string playerClass)
 {
     if(FIGHTER_STR == playerClass){
-        m_playersInGame.push_back(new Fighter(playerName));
+        unique_ptr<Player> newPlayer (new Fighter(playerName));
+        m_playersInGame.push_back(move(newPlayer));
     }
     else if(ROGUE_STR == playerClass){
-        m_playersInGame.push_back(new Rogue(playerName));;
+        unique_ptr<Player> newPlayer (new Rogue(playerName));
+        m_playersInGame.push_back(move(newPlayer));
     }
     else if(WIZARD_STR == playerClass){
-        m_playersInGame.push_back(new Wizard(playerName));;
+        unique_ptr<Player> newPlayer (new Wizard(playerName));
+        m_playersInGame.push_back(move(newPlayer));
     }
     else{
         return false;
@@ -116,7 +119,8 @@ bool Mtmchkin::createPlayer(const std::string playerName, const std::string play
 
 bool Mtmchkin::checkName(string playerName) const{
     if(playerName.length() <= MAX_PLAYER_NAME_LENGTH && playerName.length()> 0){
-        for(int i=0; i< playerName.length();++i){
+        int length = playerName.length();
+        for(int i=0; i< length;++i){
             if(!(isalpha(playerName[0]))){
                 return false;
             }
@@ -129,28 +133,36 @@ bool Mtmchkin::checkName(string playerName) const{
 void Mtmchkin::createCard(const string cardString,int row){
 
     if(cardString == GOBLIN_STR){
-        m_cardsDeque.push_back(new Goblin());
+        unique_ptr<Card> newCard (new Goblin());
+        m_cardsDeque.push_back(move(newCard));
     }
     else if(cardString == VAMPIRE_STR){
-       m_cardsDeque.push_back(new Vampire());
+        unique_ptr<Card> newCard (new Vampire());
+        m_cardsDeque.push_back(move(newCard));
     }
     else if(cardString == DRAGON_STR){
-        m_cardsDeque.push_back(new Dragon());
+        unique_ptr<Card> newCard (new Dragon());
+        m_cardsDeque.push_back(move(newCard));
     }
     else if(cardString == BARFIGHT_STR){
-        m_cardsDeque.push_back(new Barfight());
+        unique_ptr<Card> newCard (new Barfight());
+        m_cardsDeque.push_back(move(newCard));
     }
     else if(cardString == FAIRY_STR){
-        m_cardsDeque.push_back(new Fairy());
+        unique_ptr<Card> newCard (new Fairy());
+        m_cardsDeque.push_back(move(newCard));
     }
     else if(cardString == PITFALL_STR){
-        m_cardsDeque.push_back(new Pitfall());
+        unique_ptr<Card> newCard (new Pitfall());
+        m_cardsDeque.push_back(move(newCard));
     }
     else if(cardString == TREASURE_STR){
-        m_cardsDeque.push_back(new Treasure());
+        unique_ptr<Card> newCard (new Treasure());
+        m_cardsDeque.push_back(move(newCard));
     }
     else if(cardString == MERCHANT_STR){
-        m_cardsDeque.push_back(new Merchant());
+        unique_ptr<Card> newCard (new Merchant());
+        m_cardsDeque.push_back(move(newCard));
     }
     else{
         throw DeckFileFormatError(row);
@@ -162,9 +174,11 @@ int Mtmchkin::getNumberOfRounds() const{
 }
 
 bool Mtmchkin::isGameOver() const{
-    bool isOver = false;
+    if(m_numberOfRounds > MAXIMUM_NUMBER_OF_ROUNDS){
+        return true;
+    }
     for(int i=0; i<m_numberOfPlayers;++i){
-        if(m_isInGame.at(i)){
+        if(m_isInGame[i]){
             return false;
         }
     }
@@ -172,25 +186,29 @@ bool Mtmchkin::isGameOver() const{
 }
 
 void Mtmchkin::updateGame(){
+    int lostInRound = 0;
+    int wonInRound = 0;
     for(int i=m_amountOfWinners;i<m_numberOfPlayers-m_amountOfLosers;++i){
         if(m_isInGame.at(i)){
             if(m_playersInGame.at(i)->isKnockedOut()){
                 m_isInGame.at(i) = false;
-                for(int j=i;j<m_numberOfPlayers-m_amountOfLosers-1;++j){
+                for(int j=i;j<m_numberOfPlayers-m_amountOfLosers-1-lostInRound;++j){
                     swap(m_playersRank[j],m_playersRank[j+1]);
                 }
-                ++m_amountOfLosers;
+                ++lostInRound;
             }
             if(m_playersInGame.at(i)->getLevel() == MAX_LEVEL)
             {
                 m_isInGame.at(i) = false;
-                for(int j=i;j>m_amountOfWinners+1;--j){
+                for(int j=i;j>m_amountOfWinners-wonInRound+1;--j){
                     swap(m_playersRank[j],m_playersRank[j-1]);
                 }
-                ++m_amountOfWinners;
+                ++wonInRound;
             }
         }
     }
+    m_amountOfLosers += lostInRound;
+    m_amountOfWinners += wonInRound;
 }
 
 void Mtmchkin::playRound(){
@@ -199,7 +217,7 @@ void Mtmchkin::playRound(){
         if(m_isInGame.at(i)){
             printTurnStartMessage(m_playersInGame[i]->getName());
             m_cardsDeque.front()->applyEncounter(*m_playersInGame[i]);
-            m_cardsDeque.push_back(m_cardsDeque.front());
+            m_cardsDeque.push_back(move(m_cardsDeque.front()));
             m_cardsDeque.pop_front();
         }
     }
@@ -208,7 +226,6 @@ void Mtmchkin::playRound(){
     if(isGameOver()){
         printGameEndMessage();
     }
-
 }
 
 void Mtmchkin::printLeaderBoard() const{
@@ -217,3 +234,4 @@ void Mtmchkin::printLeaderBoard() const{
         printPlayerLeaderBoard(i+1,*m_playersInGame[m_playersRank[i]]);
     }
 }
+

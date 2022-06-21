@@ -13,8 +13,7 @@ Vampire::Vampire ()
 void Vampire::printInfo (std::ostream& os) const
 {
     printCardDetails(os, this->m_cardName);
-    printMonsterDetails(os, this->m_force, this->m_damage,
-    this->m_coins);
+    printMonsterDetails(os, this->m_force, this->m_damage,this->m_coins);
     printEndOfCardDetails(os);
 }
 
