@@ -59,7 +59,7 @@ void Merchant::applyEncounter (Player& player) const
             }
             else{
                 printInvalidInput();
-                cin >> str;
+                getline(cin,str);
             }
         }
         }

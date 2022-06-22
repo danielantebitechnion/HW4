@@ -1,30 +1,47 @@
-#ifndef EX4_EXCEPTION_H
-#define EX4_EXCEPTION_H
+#ifndef EX4_DECK_EXCEPTION_H
+#define EX4_DECK_EXCEPTION_H
 
 #include <string>
 #include "utilities.h"
 
-class Exception : public std::runtime_error{
+class DeckException : public std::runtime_error
+{
     public:
-    Exception(const std::string& what) : std::runtime_error(what){}
+
+        DeckException (const std::string& what)
+        :
+        std::runtime_error(what)
+        {}
 };
 
-class DeckFileNotFound : public Exception{
+class DeckFileNotFound : public DeckException
+{
     public:
-    DeckFileNotFound() : Exception(std::string("Deck File Error: File not found"))
-    {}
+
+        DeckFileNotFound ()
+        :
+        DeckException(std::string("Deck File Error: File not found"))
+        {}
 };
 
-class DeckFileInvalidSize : public Exception{
+class DeckFileInvalidSize : public DeckException
+{
     public:
-    DeckFileInvalidSize() : Exception(std::string("Deck File Error: Deck size is invalid"))
-    {}
+
+        DeckFileInvalidSize ()
+        :
+        DeckException(std::string("Deck File Error: Deck size is invalid"))
+        {}
 };
 
-class DeckFileFormatError : public Exception{
+class DeckFileFormatError : public DeckException
+{
     public:
-    DeckFileFormatError(int line) : Exception(std::string("Deck File Error: File format error in line " + std::to_string(line)))
-    {}
+
+        DeckFileFormatError (int line)
+        :
+        DeckException(std::string("Deck File Error: File format error in line " + std::to_string(line)))
+        {}
 };
 
-#endif // EX4_EXCEPTION_H
+#endif // EX4_DECK_EXCEPTION_H

@@ -13,32 +13,17 @@ const std::string MERCHANT_STR = "Merchant";
 const std::string PITFALL_STR = "Pitfall";
 const std::string TREASURE_STR = "Treasure";
 const std::string VAMPIRE_STR = "Vampire";
+const std::string GANG_STR = "Gang";
 
-// enum cardNameMapIdxs
-// {
-//    First,
-//    BarfightIDX,
-//    DragonIDX,
-//    FairyIDX,
-//    GoblinIDX,
-//    MerchantIDX,
-//    PitfallIDX,
-//    TreasureIDX,
-//    VampireIDX,
-//    Last
-// };
-
-// std::map <cardNameMapIdxs, std::string> cardNameMap =
-// {
-//    {BarfightIDX, "Barfight"},
-//    {DragonIDX, "Dragon"},
-//    {FairyIDX, "Fairy"},
-//    {GoblinIDX, "Goblin"},
-//    {MerchantIDX, "Merchant"},
-//    {PitfallIDX, "Pitfall"},
-//    {TreasureIDX, "Treasure"},
-//    {VampireIDX, "Vampire"}
-// };
+const int DRAGON_FORCE = 25;
+const int DRAGON_COINS = 1000;
+const int GOBLIN_FORCE = 6;
+const int GOBLIN_DAMAGE = 10;
+const int GOBLIN_COINS = 2;
+const int VAMPIRE_FORCE = 10;
+const int VAMPIRE_DAMAGE = 10;
+const int VAMPIRE_COINS = 2;
+const int VAMPIRE_PLAYER_LOST_FORCE = 1;
 
 class Card {
 
@@ -78,7 +63,7 @@ class Card {
 
         std::string m_cardName;
 
-        friend std::ostream& operator<<(std::ostream&, const Card&);
+        friend std::ostream& operator<<(std::ostream&, const Card& card);
 };
 
 #endif //EX2_Card_H

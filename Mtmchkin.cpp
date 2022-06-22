@@ -158,6 +158,10 @@ void Mtmchkin::createCard(const string cardString,int row){
         unique_ptr<Card> newCard (new Merchant());
         m_cardsDeque.push_back(move(newCard));
     }
+    else if(cardString == GANG_STR){
+        vector<unique_ptr<Battle>> newGang;
+        
+    }
     else{
         throw DeckFileFormatError(row);
     }   

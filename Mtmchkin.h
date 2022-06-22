@@ -90,13 +90,8 @@ public:
         void insertPlayers(int teamSize);
         void checkFile(const std::string fileName);
         void updateGame();
-        bool checkName(std::string playerName) const;
-
-        template <class T> void swap(T& a, T&b){
-            T c(a);
-            a=b;
-            b=c;
-        }      
+        bool checkName(std::string playerName) const;  
+         
 };
 
 

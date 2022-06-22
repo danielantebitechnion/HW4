@@ -4,17 +4,9 @@ using std::string;
 
 Vampire::Vampire ()
 :
-    Battle(VAMPIRE_STR, VAMPIRE_FORCE, VAMPIRE_COINS),
-    m_damage(VAMPIRE_DAMAGE)
+    Battle(VAMPIRE_STR, VAMPIRE_FORCE, VAMPIRE_COINS, VAMPIRE_DAMAGE)
 {
 
-}
-
-void Vampire::printInfo (std::ostream& os) const
-{
-    printCardDetails(os, this->m_cardName);
-    printMonsterDetails(os, this->m_force, this->m_damage,this->m_coins);
-    printEndOfCardDetails(os);
 }
 
 void Vampire::applyEncounter(Player& player) const

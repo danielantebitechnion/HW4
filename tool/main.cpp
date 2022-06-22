@@ -3,23 +3,11 @@ using std::cerr;
 using std::endl;
 
 int main(){
-    try{
-        Mtmchkin game("C:\\Users\\user\\Desktop\\deck.txt");
-        while (!game.isGameOver())
-        {
-            game.playRound();
-        }
-        game.printLeaderBoard();
+    Mtmchkin game("C:\\Users\\user\\Desktop\\deck.txt");
+    while (!game.isGameOver())
+    {
+        game.playRound();
     }
-    catch(const DeckFileNotFound& e){
-        cerr << e.what() << endl;
-    }
-    catch(const DeckFileFormatError& e){
-        cerr << e.what() << endl;
-    }
-    catch(const DeckFileInvalidSize& e){
-        cerr << e.what() << endl;
-    }
-
+    game.printLeaderBoard();
     return 0;
 }

@@ -3,9 +3,6 @@
 
 #include "Battle.h"
 
-const int DRAGON_FORCE = 25;
-const int DRAGON_COINS = 1000;
-
 class Dragon : public Battle
 {
     public:
@@ -14,8 +11,6 @@ class Dragon : public Battle
 
         void printInfo(std::ostream& os) const override;
         
-        void applyEncounter(Player& player) const override;
-
     private:
 
         // Nothing
