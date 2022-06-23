@@ -23,6 +23,7 @@ Mtmchkin::Mtmchkin(const string fileName){
 
 void Mtmchkin::checkFile(const string fileName){
     int amountOfCards =0;
+    int deckLine = 1;
     ifstream source(fileName.c_str());
     if(!source){
         throw DeckFileNotFound();
@@ -30,11 +31,17 @@ void Mtmchkin::checkFile(const string fileName){
     try{
         string line;
         while (getline(source,line)){
-            createCard(line,amountOfCards);
+            if(line == GANG_STR){
+                createGang(source,deckLine);
+            }
+            else{
+                createCard(line,deckLine);
+            }
+            ++deckLine;
             ++amountOfCards;
         }
     }catch(const DeckFileFormatError& e){
-        throw DeckFileFormatError(amountOfCards+1);
+        throw DeckFileFormatError(deckLine);
     }
     if(amountOfCards < MINIMUM_AMOUNT_OF_CARDS){
         throw DeckFileInvalidSize();
@@ -60,13 +67,13 @@ int Mtmchkin::initializeTeamSize() const{
 }
 
 void Mtmchkin::insertPlayers(int teamSize){
-    int addedPlayers = 0;
     string str;
     string playerName;
     string playerClass;
+    bool playerInserted = false;
     for(int i=0;i<teamSize;++i){
         printInsertPlayerMessage();
-        while(addedPlayers < teamSize){
+        while(playerInserted == false){
             getline(cin,str);
             if(str.find(SPACE_CHAR) == str.npos){//no space char
                 playerName = str;
@@ -77,7 +84,7 @@ void Mtmchkin::insertPlayers(int teamSize){
             }
             if(checkName(playerName)){
                 if(createPlayer(playerName,playerClass)){
-                    ++addedPlayers;
+                    playerInserted =true;
                 }
                 else{
                     printInvalidClass();
@@ -87,6 +94,7 @@ void Mtmchkin::insertPlayers(int teamSize){
                 printInvalidName();
             }
         }
+        playerInserted = false;
     }
 }
 
@@ -115,7 +123,7 @@ bool Mtmchkin::checkName(string playerName) const{
     if(playerName.length() <= MAX_PLAYER_NAME_LENGTH && playerName.length()> 0){
         int length = playerName.length();
         for(int i=0; i< length;++i){
-            if(!(isalpha(playerName[0]))){
+            if(!(isalpha(playerName[i]))){
                 return false;
             }
         }
@@ -124,7 +132,7 @@ bool Mtmchkin::checkName(string playerName) const{
     return false;
 }
 
-void Mtmchkin::createCard(const string cardString,int row){
+void Mtmchkin::createCard(const string cardString,int deckLine){
 
     if(cardString == GOBLIN_STR){
         unique_ptr<Card> newCard (new Goblin());
@@ -158,13 +166,42 @@ void Mtmchkin::createCard(const string cardString,int row){
         unique_ptr<Card> newCard (new Merchant());
         m_cardsDeque.push_back(move(newCard));
     }
-    else if(cardString == GANG_STR){
-        vector<unique_ptr<Battle>> newGang;
-        
-    }
     else{
-        throw DeckFileFormatError(row);
+        throw DeckFileFormatError(deckLine);
     }   
+}
+
+void Mtmchkin::createGang(ifstream &source,int &deckLine){
+    vector<unique_ptr<Battle>> gangCard;
+    string line;
+    bool endGangCardAccepted = false;
+    while(endGangCardAccepted == false){
+        if(source.eof()){
+            throw DeckFileFormatError(++deckLine);
+        }
+        getline(source,line);
+        ++deckLine;
+        if(line == GOBLIN_STR){
+            unique_ptr<Battle> newCard (new Goblin());
+            gangCard.push_back(move(newCard));
+        }
+        else if(line == VAMPIRE_STR){
+            unique_ptr<Battle> newCard (new Vampire());
+            gangCard.push_back(move(newCard));
+        }
+        else if(line == DRAGON_STR){
+            unique_ptr<Battle> newCard (new Dragon());
+            gangCard.push_back(move(newCard));
+        }
+        else if(line == END_GANG_STR){
+            endGangCardAccepted = true;
+            unique_ptr<Card> newCard (new Gang(move(gangCard)));
+            m_cardsDeque.push_back(move(newCard));
+        }
+        else{
+            throw DeckFileFormatError(deckLine);
+        }
+    }
 }
 
 int Mtmchkin::getNumberOfRounds() const{
@@ -199,7 +236,6 @@ void Mtmchkin::updateGame(){
         }
     }
 }
-
 
 void Mtmchkin::playRound(){
     printRoundStartMessage(m_numberOfRounds+1);

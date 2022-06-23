@@ -1,6 +1,5 @@
 #include "../utilities.h"
 #include "Pitfall.h"
-using std::string;
 
 Pitfall::Pitfall ()
 :

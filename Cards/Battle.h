@@ -7,8 +7,7 @@ class Battle : public Card
 {
     public:
 
-        Battle (const std::string cardName, int force, int coins,
-        int damage);
+        Battle (const std::string cardName, int force, int coins, int damage);
 
         virtual void printInfo(std::ostream& os) const override;
         

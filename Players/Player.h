@@ -2,7 +2,6 @@
 #define EX4_PLAYER_H
 
 #include <string>
-#include <map>
 #include <iostream>
 
 const int DFLT_LEVEL = 1;
@@ -17,19 +16,6 @@ const std::string FIGHTER_STR = "Fighter";
 const std::string ROGUE_STR = "Rogue";
 const std::string WIZARD_STR = "Wizard";
 
-// enum playerNameMapIdxs
-// {
-//    FighterIDX,
-//    RogueIDX,
-//    WizardIDX
-// };
-
-// std::map <playerNameMapIdxs, std::string> playerNameMap =
-// {
-//    {FighterIDX, "Fighter"},
-//    {RogueIDX, "Rogue"},
-//    {WizardIDX, "Wizard"}
-// };
 
 class Player
 {

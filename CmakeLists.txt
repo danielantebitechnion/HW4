@@ -27,6 +27,8 @@ add_executable(hw4 tool/main.cpp
         Cards/Treasure.cpp
         Cards/Vampire.h
         Cards/Vampire.cpp
+        Cards/Gang.cpp
+        Cards/Gang.h
         Players/Player.h
         Players/Player.cpp
         Players/Fighter.h

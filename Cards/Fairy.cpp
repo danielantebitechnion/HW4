@@ -1,6 +1,5 @@
 #include "../utilities.h"
 #include "Fairy.h"
-using std::string;
 
 Fairy::Fairy ()
 :

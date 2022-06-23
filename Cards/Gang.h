@@ -3,19 +3,20 @@
 
 #include "Card.h"
 #include "Battle.h"
+#include <memory>
 #include <vector>
 
 class Gang : public Card
 {
     public:
 
-        Gang (const std::vector<Battle> monsters);
+        Gang (std::vector<std::unique_ptr<Battle>>&& monsters);
 
         void applyEncounter(Player& player) const override;
 
     private:
 
-        const std::vector<Battle> m_monsters;
+        std::vector<std::unique_ptr<Battle>> m_monsters;
 };
 
 #endif // EX4_GANG_H

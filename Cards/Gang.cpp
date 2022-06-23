@@ -1,12 +1,13 @@
 #include "../utilities.h"
 #include "Gang.h"
-#include "Goblin.h"
 using std::vector;
+using std::unique_ptr;
+using std::move;
 
-Gang::Gang (const vector<Battle> monsters)
+Gang::Gang (vector<unique_ptr<Battle>>&& monsters)
 :
     Card(GANG_STR),
-    m_monsters(monsters)
+    m_monsters(move(monsters))
 {
 
 }
@@ -14,23 +15,23 @@ Gang::Gang (const vector<Battle> monsters)
 void Gang::applyEncounter (Player& player) const
 {
     bool playerLost = false;
-    for (vector<Battle>::const_iterator it = m_monsters.begin() ;
+    for (vector<unique_ptr<Battle>>::const_iterator it = m_monsters.begin() ;
     it != m_monsters.end() ; ++it)
     {
-        if (player.getAttackStrength() < it->getForce() ||
+        if (player.getAttackStrength() < it->get()->getForce() ||
         playerLost == true) // Monster won
         {
-            player.damage(it->getDamage());
-            if (it->getName() == VAMPIRE_STR)
+            player.damage(it->get()->getDamage());
+            if (it->get()->getName() == VAMPIRE_STR)
             {
                 player.loseForce(VAMPIRE_PLAYER_LOST_FORCE);
             }
             playerLost = true;
-            printLossBattle(player.getName(), it->getName());
+            printLossBattle(player.getName(), it->get()->getName());
         }
         else // if Player won
         {
-            player.addCoins(it->getCoins());
+            player.addCoins(it->get()->getCoins());
         }
     }
     if (playerLost == false)

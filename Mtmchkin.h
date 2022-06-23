@@ -2,6 +2,7 @@
 #define MTMCHKIN_H_
 #include <string>
 #include <iostream>
+#include <fstream>
 #include <deque>
 #include <vector>
 #include "utilities.h"
@@ -22,6 +23,7 @@
 #include "Cards/Pitfall.h"
 #include "Cards/Treasure.h"
 #include "Cards/Vampire.h"
+#include "Cards/Gang.h"
 
 const int MINIMUM_AMOUNT_OF_CARDS = 5;
 const int MINIMUM_AMOUNT_OF_PLAYERS = 2;
@@ -85,9 +87,10 @@ public:
         int m_numberOfWinners,m_numberOfLosers;
 
         int initializeTeamSize() const;
-        void createCard(const std::string cardString, int row);
+        void createCard(const std::string cardString, int deckLine);
         bool createPlayer(const std::string playerName, const std::string playerClass);
         void insertPlayers(int teamSize);
+        void createGang(std::ifstream &source,int &deckLine);
         void checkFile(const std::string fileName);
         void updateGame();
         bool checkName(std::string playerName) const;  

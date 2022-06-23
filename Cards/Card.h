@@ -2,7 +2,6 @@
 #define EX2_CARD_H
 
 #include <string>
-#include <map>
 #include "../Players/Player.h"
 
 const std::string BARFIGHT_STR = "Barfight";
@@ -14,6 +13,7 @@ const std::string PITFALL_STR = "Pitfall";
 const std::string TREASURE_STR = "Treasure";
 const std::string VAMPIRE_STR = "Vampire";
 const std::string GANG_STR = "Gang";
+const std::string END_GANG_STR = "EndGang";
 
 const int DRAGON_FORCE = 25;
 const int DRAGON_COINS = 1000;
